@@ -9,3 +9,4 @@ for i in range(subProjectNum):
     inputString += str(i) + ": " + subProjectNames[i] + "\n"
 inputString += "??: "
 subProjectRunMode = input(inputString)
+
