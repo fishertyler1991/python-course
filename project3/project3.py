@@ -56,7 +56,7 @@ elif subProjectRunMode == 1:
     class RPS_OPS(Enum):
         ROCK = 0
         PAPER = 1
-        SICS = 2
+        SCISSORS = 2
 
     def checkPoints(cp):
         if cp[0] >= 2:
@@ -93,7 +93,7 @@ elif subProjectRunMode == 1:
             "\nAI: " + str(points[1]))
         ai_choice = random.randint(0, 2)
         player_choice = int(input( \
-            "Rock 0, Paper 1, Siccors 2\n??: "))
+            "Rock 0, Paper 1, Scissors 2\n??: "))
 
         res = checkMatch()
         if res == 1:
