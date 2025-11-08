@@ -2,7 +2,7 @@ from enum import Enum
 import random
 
 
-subProjectNames = ["Guess number", "RPS", "sp3"]
+subProjectNames = ["Guess number", "RPS", "PQ4a", "PQ4b"]
 inputString = "Enter sub project: \n"
 subProjectNum = len(subProjectNames)
 for i in range(subProjectNum):
@@ -58,6 +58,37 @@ elif subProjectRunMode == 1:
         PAPER = 1
         SCISSORS = 2
 
+    rpsASCII = [
+        """\
+    _______
+    -'       '-_
+    |           |
+    |   ROCK    |
+    |           |
+    -'_______   |
+            '-_'\
+    """,
+        """\
+    __________
+    |          |
+    |  PAPER   |
+    |          |
+    |          |
+    |__________|
+    """,
+        """\
+    _  _
+    ( `' )
+    ) (  
+    /   \ 
+    (     )
+    \___/
+    | |
+    | |
+    /   \ 
+    """
+    ]
+
     def checkPoints(cp):
         if cp[0] >= 2:
             return 1
@@ -74,7 +105,7 @@ elif subProjectRunMode == 1:
         pc = player_choice
         ac = ai_choice
 
-        print("You: " + RPS_OPS(pc).name + " AI: " + RPS_OPS(ac).name)
+        print("You:\n" + rpsASCII[pc]+ "\nAI:\n" + rpsASCII[ac])
         if pc == ac:
             print("Result: Tie")
             return 0
@@ -92,8 +123,18 @@ elif subProjectRunMode == 1:
         print("Current Score\nYou: " + str(points[0]) + \
             "\nAI: " + str(points[1]))
         ai_choice = random.randint(0, 2)
-        player_choice = int(input( \
-            "Rock 0, Paper 1, Scissors 2\n??: "))
+        player_choice = input("Rock 0, Paper 1, Scissors 2\n??: ")
+        if player_choice.isdigit():
+            player_choice = int(player_choice)
+        elif player_choice.lower() == "rock":
+            player_choice = 0
+        elif player_choice.lower() == "paper":
+            player_choice = 1
+        elif player_choice.lower() == "scissors":
+            player_choice = 2
+        else:
+            print("Bad input, try again.")
+            continue
 
         res = checkMatch()
         if res == 1:
@@ -108,3 +149,23 @@ elif subProjectRunMode == 1:
         print("OH NOOOO")
     pass
 
+#1. ctrl-c same for any command line program
+#
+#2. break ends the loop completely, while continue just moves to the next ieration
+#
+#3. all result in the same ierrative cycle
+#
+#4. 
+elif subProjectRunMode == 2:
+    for i in range(1, 11):
+        print(i)
+    pass
+elif subProjectRunMode == 3:
+    i = 1
+    while i < 11:
+        print(i)
+        i += 1
+    pass
+#
+#5. spam.bacon()
+#
