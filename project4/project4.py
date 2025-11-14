@@ -1,16 +1,48 @@
 from enum import Enum
 from random import random
+import time, sys
 
 def _SP1():
+    indent = 0
+    indent_inc = True
+    spRun = True
+    try:
+        while spRun:
+            print(' ' * indent, end = '')
+            print('*' * 8)
+            time.sleep(0.1)
+
+            if indent_inc:
+                indent += 1
+                if indent >= 20:
+                    indent_inc = False
+            else:
+                indent -= 1
+                if indent <= 0:
+                    indent_inc = True
+    except KeyboardInterrupt:
+        spRun = False
     pass
 
 def _SP2():
+    spRun = True
+    try:
+        while spRun:
+            for i in range(1, 9):
+                print('-' * (i*i))
+                time.sleep(0.1)
+
+            for i in range(7, 1, -1):
+                print('-' * (i * i))
+                time.sleep(0.1)
+    except KeyboardInterrupt:
+        spRun = False
     pass
 
 def _SP3():
     pass
 
-subProjectNames = ["sp1", "sp2", "sp3"]
+subProjectNames = ["Try + ascii ani", "spike ascii", "sp3"]
 inputString = "Enter sub project (0 or 'exit' to exit): \n"
 subProjectNum = len(subProjectNames)
 for i in range(subProjectNum):
