@@ -1,7 +1,28 @@
 from enum import Enum
 from random import random
 
+def getNumFromIn(i):
+    if i.isdigit():
+        return int(i)
+    else:
+        return False
+
 def _SP1():
+    tiw = tiw = input("Enter Width: ")
+    while not getNumFromIn(tiw):
+        tiw = input("Enter Width: ")
+    tih = tih = input("Enter Height: ")
+    while not getNumFromIn(tih):
+        tih = input("Enter Height: ")
+
+    print(tiw + " " + tih)
+    return 1
+    for i in range(tih):
+        print('O', end = '')
+        if i == 0 or i == tih - 1:
+            for i in range(tiw):
+                print('O', end = '')
+        print('')
     pass
 
 def _SP2():
@@ -10,7 +31,7 @@ def _SP2():
 def _SP3():
     pass
 
-subProjectNames = ["sp1", "sp2", "sp3"]
+subProjectNames = ["make a box", "sp2", "sp3"]
 inputString = "Enter sub project (0 or 'exit' to exit): \n"
 subProjectNum = len(subProjectNames)
 for i in range(subProjectNum):
