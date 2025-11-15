@@ -15,14 +15,15 @@ def _SP1():
     while not getNumFromIn(tih):
         tih = input("Enter Height: ")
 
-    print(tiw + " " + tih)
-    return 1
+    tiw = int(tiw) - 2
+    tih = int(tih) - 0
     for i in range(tih):
         print('O', end = '')
         if i == 0 or i == tih - 1:
-            for i in range(tiw):
-                print('O', end = '')
-        print('')
+            print('O' * tiw, end = '')
+        else:
+            print(' ' * tiw, end='')
+        print('O')
     pass
 
 def _SP2():
