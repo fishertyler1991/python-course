@@ -1,0 +1,3 @@
+changed template folder to misc
+added updateNotes.txt
+swapped from random import random to import random on template

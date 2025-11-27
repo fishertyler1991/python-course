@@ -1,5 +1,26 @@
 from enum import Enum
-from random import random
+import random
+
+ballResponses = ["It is certain.",
+    "It is decidedly so.",
+    "Without a doubt.",
+    "Yes definitely.",
+    "You may rely on it.",
+    "As I see it, yes.",
+    "Most likely.",
+    "Outlook good.",
+    "Yes.",
+    "Signs point to yes.",
+    "Reply hazy, try again.",
+    "Ask again later.",
+    "Better not tell you now.",
+    "Cannot predict now.",
+    "Concentrate and ask again.",
+    "Don't count on it.",
+    "My reply is no.",
+    "My sources say no.",
+    "Outlook not so good.",
+    "Very doubtful."]
 
 def _SP1():
     pass
@@ -10,7 +31,7 @@ def _SP2():
 def _SP3():
     pass
 
-subProjectNames = ["sp1", "sp2", "sp3"]
+subProjectNames = ["Listed balls", "sp2", "sp3"]
 inputString = "Enter sub project (0 or 'exit' to exit): \n"
 subProjectNum = len(subProjectNames)
 for i in range(subProjectNum):

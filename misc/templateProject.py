@@ -1,5 +1,5 @@
 from enum import Enum
-from random import random
+import random
 
 def _SP1():
     pass
