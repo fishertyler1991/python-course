@@ -81,7 +81,7 @@ def _SP4():
     for i in range(100):
         coinRes.append(random.choice(tossOps))
         pass
-    print(coinRes)
+    #print(coinRes)
     curStreakOp = coinRes[0]
     curStreakCount = 1
     maxStreakOp = coinRes[0]
@@ -131,7 +131,8 @@ while not endProgram:
     elif subProjectRunMode == 3:
         _SP3()
     elif subProjectRunMode == 4:
-        _SP4()
+        for i in range(100):
+            _SP4()
 
 '''
   1.  What is []?

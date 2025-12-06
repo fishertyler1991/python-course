@@ -2,6 +2,8 @@ import random
 import time
 import shutil
 
+intFloatTulp = (int, float)
+
 def _hackerMode() -> None:
     """
     THE ONE. True Matrix rain with everything:
@@ -76,5 +78,46 @@ def _hackerMode() -> None:
         time.sleep(1)
         _clearConsole()
 
+
+def _getNumberFromText(
+    i: str,
+    numberType: type = int,
+    printExcept: bool = False,
+) -> int | float | None:
+    """
+    Attempt to convert a string to int or float.
+    Returns the number on success, None on failure.
+    """
+    if numberType in intFloatTulp:
+        try:
+            return numberType(i)
+        except ValueError:
+            if printExcept:
+                print(f"Value is not {numberType.__name__}.")
+            return None
+    else:
+        return None
+
+
+def _confirm(prompt: str = "Confirm?", default: bool = True) -> bool:
+    choices = " [Y/n]" if default else " [y/N]"
+    response = input(prompt + choices + " ").strip()
+    
+    if not response:
+        return default
+    
+    normalized = response.lower()
+    if normalized in {'y', 'yes', 'yeah', 'yep', 'sure', 'ok', 'okay', '1'}:
+        return True
+    if normalized in {'n', 'no', 'nope', 'nah', '0'}:
+        return False
+    
+    first = normalized[0]
+    return first == 'y' if default else first == 'n'
+
 # JUST RUN THIS ONE LINE:
-_hackerMode()
+while True:
+    if not not _confirm("Test question"):
+        break
+
+    
