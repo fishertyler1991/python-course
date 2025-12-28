@@ -115,9 +115,23 @@ def _confirm(prompt: str = "Confirm?", default: bool = True) -> bool:
     first = normalized[0]
     return first == 'y' if default else first == 'n'
 
+def _rangeToString(r: range) -> str:
+    return ''.join(map(str, r))
+
+def alpha_range(start: str, end: str | None = None, step: int = 1) -> str:
+    if len(start) != 1 or (end and len(end) != 1):
+        raise ValueError("start and end must be single characters")
+    
+    if end is None:
+        base = 'a' if start.islower() else 'A'
+        return ''.join(chr(i) for i in range(ord(base), ord(start) + 1))
+    
+    start_ord = ord(start)
+    end_ord = ord(end)
+    adj = 1 if step > 0 else -1
+    return ''.join(chr(i) for i in range(start_ord, end_ord + adj, step))
+
 # JUST RUN THIS ONE LINE:
-while True:
-    if not not _confirm("Test question"):
-        break
+print(_rangeToString(range(8, 1, -1)))
 
     

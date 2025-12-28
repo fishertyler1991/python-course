@@ -1,5 +1,5 @@
 from enum import Enum
-import random
+import random, re, sys, copy
 
 def _getNumberFromText(i, numberType = int):
     toReturn = None
@@ -29,7 +29,25 @@ def _confirm(prompt: str = "Confirm?", default: bool = True) -> bool:
     first = normalized[0]
     return first == 'y' if default else first == 'n'
 
-threeLetterMonths = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'nov', 'dec']
+def _rangeToString(r: range) -> str:
+    return ''.join(map(str, r))
+
+def _alphaRangeToString(start: str, end: str | None = None, step: int = 1) -> str:
+    if len(start) != 1 or (end and len(end) != 1):
+        raise ValueError("start and end must be single characters")
+    
+    if end is None:
+        base = 'a' if start.islower() else 'A'
+        return ''.join(chr(i) for i in range(ord(base), ord(start) + 1))
+    
+    start_ord = ord(start)
+    end_ord = ord(end)
+    adj = 1 if step > 0 else -1
+    return ''.join(chr(i) for i in range(start_ord, end_ord + adj, step))
+
+def is_valid_month_day(text: str) -> bool:
+    return bool(re.match(r"^(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC) \d{1,2}$", 
+        text.strip(), re.IGNORECASE))
 
 def _SP1():
     bdays = {
@@ -59,20 +77,138 @@ def _SP1():
         elif checkName in bdays:
             print(checkName + "'s bday is " + bdays[checkName] + ".")
         else:
-            addName = input("No bday exists for " + checkName + ".\n Would you like to enter one?\n?? ").lower()
-            if addName == "yes" or addName == "y":
+            if _confirm(prompt="Name does not exit, add birthday?", default=False):
+                addDate = input("Please enter the date in the format of 3 letter month space day. Ex: SEP 21.\n?? ")
+                if is_valid_month_day(addDate):
+                    bdays[checkName] = addDate
+                    print("Name and date added.")
+                    pass
+                else:
+                    print("Bday entered is not valid.")
                 pass
             pass
         pass
     pass
 
 def _SP2():
+    strToCheck = input("Enter a string to count.\n?? ")
+    count = {}
+    for c in strToCheck:
+        count.setdefault(c, 0)
+        count[c] = count[c] + 1
+    print(count)
     pass
 
 def _SP3():
+
+    ALL_POS = []
+    for c in _alphaRangeToString('a', 'h'):
+        for i in range(1, 9):
+            ALL_POS.append(c + str(i))
+
+    STARTING_PIECES = {'a8': 'bR', 'b8': 'bN', 'c8': 'bB', 'd8': 'bQ',
+        'e8': 'bK', 'f8': 'bB', 'g8': 'bN', 'h8': 'bR', 'a7': 'bP', 'b7': 'bP',
+        'c7': 'bP', 'd7': 'bP', 'e7': 'bP', 'f7': 'bP', 'g7': 'bP', 'h7': 'bP',
+        'a1': 'wR', 'b1': 'wN', 'c1': 'wB', 'd1': 'wQ', 'e1': 'wK', 'f1': 'wB',
+        'g1': 'wN', 'h1': 'wR', 'a2': 'wP', 'b2': 'wP', 'c2': 'wP', 'd2': 'wP',
+        'e2': 'wP', 'f2': 'wP', 'g2': 'wP', 'h2': 'wP'}
+
+    BOARD_TEMPLATE = """
+        a    b    c    d    e    f    g    h
+    ____ ____ ____ ____ ____ ____ ____ ____
+    ||||||    ||||||    ||||||    ||||||    |
+    8 ||{}|| {} ||{}|| {} ||{}|| {} ||{}|| {} |
+    ||||||____||||||____||||||____||||||____|
+    |    ||||||    ||||||    ||||||    ||||||
+    7 | {} ||{}|| {} ||{}|| {} ||{}|| {} ||{}||
+    |____||||||____||||||____||||||____||||||
+    ||||||    ||||||    ||||||    ||||||    |
+    6 ||{}|| {} ||{}|| {} ||{}|| {} ||{}|| {} |
+    ||||||____||||||____||||||____||||||____|
+    |    ||||||    ||||||    ||||||    ||||||
+    5 | {} ||{}|| {} ||{}|| {} ||{}|| {} ||{}||
+    |____||||||____||||||____||||||____||||||
+    ||||||    ||||||    ||||||    ||||||    |
+    4 ||{}|| {} ||{}|| {} ||{}|| {} ||{}|| {} |
+    ||||||____||||||____||||||____||||||____|
+    |    ||||||    ||||||    ||||||    ||||||
+    3 | {} ||{}|| {} ||{}|| {} ||{}|| {} ||{}||
+    |____||||||____||||||____||||||____||||||
+    ||||||    ||||||    ||||||    ||||||    |
+    2 ||{}|| {} ||{}|| {} ||{}|| {} ||{}|| {} |
+    ||||||____||||||____||||||____||||||____|
+    |    ||||||    ||||||    ||||||    ||||||
+    1 | {} ||{}|| {} ||{}|| {} ||{}|| {} ||{}||
+    |____||||||____||||||____||||||____||||||
+    """
+    
+    WHITE_SQUARE = '||'
+    BLACK_SQUARE = '  '
+
+    def printState(state: dict):
+        squares = []
+        isSquareWhite = True
+        yStr = _rangeToString(range(8, 0, -1))
+        xStr = _alphaRangeToString('a', 'h')
+        for y in yStr:
+            for x in xStr:
+                if x + y in state.keys():
+                    squares.append(state[x + y])
+                else:
+                    if isSquareWhite:
+                        squares.append(WHITE_SQUARE)
+                    else:
+                        squares.append(BLACK_SQUARE)
+                isSquareWhite = not isSquareWhite
+            pass
+
+        print(BOARD_TEMPLATE.format(*squares))
+        pass
+
+    def printIntro():
+        print('Interactive Chessboard')
+        print('by Al Sweigart al@inventwithpython.com')
+        print()
+        print('Pieces:')
+        print('  w - White, b - Black')
+        print('  P - Pawn, N - Knight, B - Bishop, R - Rook, Q - Queen, K - King')
+        print('Commands:')
+        print('  move e2 e4 - Moves the piece at e2 to e4')
+        print('  remove e2 - Removes the piece at e2')
+        print('  set e2 wP - Sets square e2 to a white pawn')
+        print('  reset - Resets pieces back to their starting squares')
+        print('  clear - Clears the entire board')
+        print('  fill wP - Fills entire board with white pawns.')
+        print('  quit - Quits the program')
+    
+    printIntro()
+
+    gameInProg = True
+    gameBoard = copy.copy(STARTING_PIECES)
+    while gameInProg:
+        printState(gameBoard)
+        nextInput = input("> ").split()
+        if nextInput[0] == "move":
+            gameBoard[nextInput[2]] = gameBoard[nextInput[1]]
+            del gameBoard[nextInput[1]]
+        elif nextInput[0] == "remove":
+            del gameBoard[nextInput[1]]
+        elif nextInput[0] == "set":
+            gameBoard[nextInput[1]] = nextInput[2]
+        elif nextInput[0] == "reset":
+            gameBoard = copy.copy(STARTING_PIECES)
+        elif nextInput[0] == "clear":
+            gameBoard.clear()
+        elif nextInput[0] == "fill":
+            gameBoard.clear()
+            for pos in ALL_POS:
+                gameBoard[pos] = nextInput[1]
+        elif nextInput[0] == "quit":
+            gameInProg = False
+        pass
     pass
 
-subProjectNames = ["Friend Bday", "sp2", "sp3"]
+subProjectNames = ["Friend Bday", "String char counter; dir style", "chess with dics"]
 inputString = "Enter sub project (0 or 'exit' to exit): \n"
 subProjectNum = len(subProjectNames)
 for i in range(subProjectNum):
