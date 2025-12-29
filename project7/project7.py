@@ -259,7 +259,72 @@ def _SP3():
         pass
     pass
 
-subProjectNames = ["Friend Bday", "String char counter; dir style", "chess with dics"]
+def _SP4():
+    ITEM_POOL = ["Potion of Healing", \
+        "Magic Sword", \
+        "Ring of Protection", \
+        "Wand of Magic Missiles", \
+        "Cloak of Invisibility", \
+        "Staff of Power", \
+        "Bag of Holding", \
+        "Potion of Flying", \
+        "Scroll of Fireball", \
+        "Amulet of Health", \
+        "Boots of Speed", \
+        "Ring of Invisibility", \
+        "Enchanted Armor", \
+        "Potion of Greater Healing", \
+        "Decanter of Endless Water", \
+        "Feather Fall Token", \
+        "Pearl of Power", \
+        "Gloves of Missile Snaring", \
+        "Hat of Disguise", \
+        "Immovable Rod", \
+        "Driftglobe", \
+        "Cloak of Elvenkind", \
+        "Eyes of the Eagle", \
+        "Sending Stone", \
+        "Alchemy Jug"]
+
+    def printInventory(inv: dict):
+        print("Inventory")
+        totalItems = 0
+        for k, v in inv.items():
+            print(str(v) + " " + k)
+            totalItems += v
+        print("Total Items: " + str(totalItems))
+        pass
+
+    def lootEnemy(inv: dict):
+        newLoot = {}
+        for i in range(8):
+            newItem = ITEM_POOL[random.randint(0, len(ITEM_POOL) - 1)]
+            newAmt = random.randint(1, 25)
+            newLoot.setdefault(newItem, 0)
+            newLoot[newItem] += newAmt
+
+        for k, v in newLoot.items():
+            inv.setdefault(k, 0)
+            inv[k] += v
+            pass
+        pass
+
+    currentInventory = {}
+    for i in range(8):
+        newItem = ITEM_POOL[random.randint(0, len(ITEM_POOL) - 1)]
+        newAmt = random.randint(1, 25)
+        currentInventory.setdefault(newItem, 0)
+        currentInventory[newItem] += newAmt
+
+    printInventory(currentInventory)
+
+    print("Fighting dragon.")
+    lootEnemy(currentInventory)
+    printInventory(currentInventory)
+
+    pass
+
+subProjectNames = ["Friend Bday", "String char counter; dir style", "chess with dics", "Inventory"]
 inputString = "Enter sub project (0 or 'exit' to exit): \n"
 subProjectNum = len(subProjectNames)
 for i in range(subProjectNum):
@@ -289,6 +354,8 @@ while not endProgram:
         _SP2()
     elif subProjectRunMode == 3:
         _SP3()
+    elif subProjectRunMode == 4:
+        _SP4()
 
 # Practice questions:
 # 1. emptyDict = {,} correct {}
