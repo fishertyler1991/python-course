@@ -165,6 +165,54 @@ def _SP3():
         print(BOARD_TEMPLATE.format(*squares))
         pass
 
+    def validateState(state: dict):
+        if not 'wK' in state.values():
+            return "White does not have a King"
+        elif not 'bK' in state.values():
+            return "Black does not have a King"
+        elif sum(1 for val in state.values() if val == "wP") > 8:
+            return "White has more then 8 pawns"
+        elif sum(1 for val in state.values() if val == "bP") > 8:
+            return "Black has more then 8 pawns"
+        elif sum(1 for val in state.values() if val == "wN") > 2:
+            return "White has more then 2 knights"
+        elif sum(1 for val in state.values() if val == "bN") > 2:
+            return "Black has more then 2 knights"
+        elif sum(1 for val in state.values() if val == "wR") > 2:
+            return "White has more then 2 rooks"
+        elif sum(1 for val in state.values() if val == "bR") > 2:
+            return "Black has more then 2 rooks"
+        elif sum(1 for val in state.values() if val == "wB") > 2:
+            return "White has more then 2 bishops"
+        elif sum(1 for val in state.values() if val == "bB") > 2:
+            return "Black has more then 2 bishops"
+        elif sum(1 for val in state.values() if val == "wQ") > 1:
+            return "White has more then 1 queen"
+        elif sum(1 for val in state.values() if val == "bQ") > 1:
+            return "Black has more then 1 queen"
+        elif sum(1 for val in state.values() if val == "wK") > 1:
+            return "White has more then 1 king"
+        elif sum(1 for val in state.values() if val == "bK") > 1:
+            return "Black has more then 1 king"
+        elif sum(1 for val in state.values() if val[0] == "w") > 16:
+            return "White has more then 16 peicess"
+        elif sum(1 for val in state.values() if val[0] == "b") > 16:
+            return "Black has more then 16 peices"
+        else:
+            for p in state:
+                if not p in ALL_POS:
+                    return "A peice does not have a proper game board posistion."
+
+            for v in state.values():
+                if len(v) != 2:
+                    return "An invalid peice is on the board."
+                elif not (v[0] == 'w' or v[0] == 'b'):
+                    return "A peice is not assigned to black or white."
+                elif not (v[1] == 'K' or v[1] == 'Q' or v[1] == 'P' or v[1] == 'N' or v[1] == 'R' or v[1] == 'B'):
+                    return "A peice is not a valid chess peice."
+            pass
+        return "State Valid"
+
     def printIntro():
         print('Interactive Chessboard')
         print('by Al Sweigart al@inventwithpython.com')
@@ -179,6 +227,7 @@ def _SP3():
         print('  reset - Resets pieces back to their starting squares')
         print('  clear - Clears the entire board')
         print('  fill wP - Fills entire board with white pawns.')
+        print('  validate - Checks if the board is valid.')
         print('  quit - Quits the program')
     
     printIntro()
@@ -188,21 +237,23 @@ def _SP3():
     while gameInProg:
         printState(gameBoard)
         nextInput = input("> ").split()
-        if nextInput[0] == "move":
+        if nextInput[0][0] == "m":
             gameBoard[nextInput[2]] = gameBoard[nextInput[1]]
             del gameBoard[nextInput[1]]
-        elif nextInput[0] == "remove":
+        elif nextInput[0][0] == "r":
             del gameBoard[nextInput[1]]
-        elif nextInput[0] == "set":
+        elif nextInput[0][0] == "s":
             gameBoard[nextInput[1]] = nextInput[2]
-        elif nextInput[0] == "reset":
+        elif nextInput[0][0] == "r":
             gameBoard = copy.copy(STARTING_PIECES)
-        elif nextInput[0] == "clear":
+        elif nextInput[0][0] == "c":
             gameBoard.clear()
-        elif nextInput[0] == "fill":
+        elif nextInput[0][0] == "f":
             gameBoard.clear()
             for pos in ALL_POS:
                 gameBoard[pos] = nextInput[1]
+        elif nextInput[0][0] == "v":
+            print("Board Validation check: " + validateState(gameBoard))
         elif nextInput[0] == "quit":
             gameInProg = False
         pass
@@ -239,3 +290,20 @@ while not endProgram:
     elif subProjectRunMode == 3:
         _SP3()
 
+# Practice questions:
+# 1. emptyDict = {,} correct {}
+# 
+# 2. fooDict = {'foo': 42}
+# 
+# 3. dicts have a value and a key but no index position, dicts are unbounded while lists are sequentional corect unordered
+# 
+# 4. get None, correct KeyError error
+# 
+# 5. no difference
+# 
+# 6. first looks for value second looks for keys
+# 
+# 7. spam['color'] = 'black', correct spam.setdefault('color', 'black')
+# 
+# 8. sys correct pprint.pprint()
+# 
